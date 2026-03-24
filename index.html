@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SosiskaGrad — уютный мессенджер</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Экран авторизации -->
+        <div class="auth-screen" id="authScreen">
+            <div class="sosiska-logo" id="logo"></div>
+            <h1>SosiskaGrad</h1>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Вход</button>
+                <button class="auth-tab" data-tab="register">Регистрация</button>
+            </div>
+            <div class="auth-form" id="loginForm">
+                <input type="text" id="loginUsername" placeholder="Имя пользователя">
+                <input type="password" id="loginPassword" placeholder="Пароль">
+                <button id="loginBtn">Войти</button>
+            </div>
+            <div class="auth-form hidden" id="registerForm">
+                <input type="text" id="regUsername" placeholder="Имя пользователя">
+                <input type="password" id="regPassword" placeholder="Пароль">
+                <button id="registerBtn">Зарегистрироваться</button>
+            </div>
+        </div>
+
+        <!-- Основной интерфейс -->
+        <div class="main-screen hidden" id="mainScreen">
+            <!-- Боковая панель -->
+            <aside class="sidebar">
+                <div class="user-info">
+                    <img id="avatarImg" class="avatar" alt="avatar">
+                    <span id="userDisplayName"></span>
+                    <div class="theme-dropdown">
+                        <button class="theme-toggle-btn" id="themeToggleBtn">🎨 Тема ▾</button>
+                        <div class="theme-menu" id="themeMenu">
+                            <button class="theme-option" data-theme="pink">🌸 Розовая</button>
+                            <button class="theme-option" data-theme="dark">🌙 Тёмная</button>
+                            <button class="theme-option" data-theme="light">☀️ Светлая</button>
+                        </div>
+                    </div>
+                    <button id="logoutBtn" class="logout-btn">Выход</button>
+                </div>
+                <nav class="nav-buttons">
+                    <button class="nav-btn active" data-tab="chat">💬 Личные сообщения</button>
+                    <button class="nav-btn" data-tab="friends">👥 Друзья</button>
+                    <button class="nav-btn" data-tab="music">🎵 Музыка</button>
+                    <button class="nav-btn" data-tab="news">📰 Новости</button>
+                    <button class="nav-btn" data-tab="profile">👤 Профиль</button>
+                </nav>
+            </aside>
+
+            <!-- Основной контент -->
+            <main class="content">
+                <!-- Вкладка: Личные сообщения -->
+                <div class="tab-content active" id="chatTab">
+                    <div class="chat-container">
+                        <div class="friends-sidebar">
+                            <h3>Друзья</h3>
+                            <div id="friendsListContainer" class="friends-list"></div>
+                        </div>
+                        <div class="chat-main">
+                            <div class="chat-header">
+                                <span id="chatHeader">Выберите друга</span>
+                                <button id="callBtn" class="call-btn hidden">📞 Позвонить</button>
+                            </div>
+                            <div class="messages" id="messagesContainer">
+                                <div class="placeholder-message">✨ Зайдите в диалог ✨</div>
+                            </div>
+                            <div class="input-area hidden" id="chatInputArea">
+                                <input type="text" id="messageInput" placeholder="Введите сообщение...">
+                                <button id="attachMediaBtn">📎</button>
+                                <button id="sendBtn">Отправить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладка: Друзья -->
+                <div class="tab-content" id="friendsTab">
+                    <h2>Друзья</h2>
+                    <div id="friendsListFull" class="friends-full-list"></div>
+                    <hr>
+                    <h3>Заявки в друзья</h3>
+                    <div id="friendRequestsList" class="requests-list"></div>
+                    <hr>
+                    <h3>Добавить друга</h3>
+                    <div class="add-friend">
+                        <input type="text" id="friendUsername" placeholder="Имя пользователя">
+                        <button id="addFriendBtn">➕ Добавить</button>
+                    </div>
+                </div>
+
+                <!-- Вкладка: Музыка -->
+                <div class="tab-content" id="musicTab">
+                    <h2>Общая музыкальная коллекция</h2>
+                    <div class="upload-music">
+                        <input type="file" id="musicUploadInput" accept="audio/*">
+                        <button id="uploadMusicBtn">🎵 Загрузить трек</button>
+                    </div>
+                    <div id="musicList" class="music-list"></div>
+                </div>
+
+                <!-- Вкладка: Новости -->
+                <div class="tab-content" id="newsTab">
+                    <h2>Новости</h2>
+                    <div class="create-news">
+                        <h3>Опубликовать новость</h3>
+                        <input type="text" id="newsTitle" placeholder="Заголовок">
+                        <textarea id="newsContent" rows="3" placeholder="Текст новости..."></textarea>
+                        <input type="file" id="newsImage" accept="image/*">
+                        <button id="publishNewsBtn">Опубликовать</button>
+                    </div>
+                    <div id="newsFeed" class="news-feed"></div>
+                </div>
+
+                <!-- Вкладка: Профиль -->
+                <div class="tab-content" id="profileTab">
+                    <h2>Мой профиль</h2>
+                    <div class="profile-form">
+                        <div class="profile-avatar">
+                            <img id="profileAvatarImg" class="avatar large" alt="avatar">
+                            <label for="avatarUploadInput" class="upload-btn">Изменить аватар</label>
+                            <input type="file" id="avatarUploadInput" accept="image/*" style="display:none">
+                        </div>
+                        <div class="profile-field">
+                            <label>Отображаемое имя:</label>
+                            <input type="text" id="profileDisplayName">
+                        </div>
+                        <div class="profile-field">
+                            <label>Дата рождения:</label>
+                            <input type="date" id="profileBirthDate">
+                        </div>
+                        <div class="profile-field">
+                            <label>О себе:</label>
+                            <textarea id="profileBio" rows="3"></textarea>
+                        </div>
+                        <button id="saveProfileBtn">Сохранить</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Центральная панель уведомлений -->
+        <div id="notificationCenter" class="notification-center">
+            <div class="notification-header">
+                <span>Уведомления</span>
+                <button id="closeNotificationsBtn">✖</button>
+            </div>
+            <div id="notificationsList" class="notifications-list"></div>
+        </div>
+
+        <!-- Глобальный плеер -->
+        <div id="globalPlayer" class="global-player hidden">
+            <div class="player-controls">
+                <button id="playerPrevBtn">⏮</button>
+                <button id="playerPlayBtn">▶</button>
+                <button id="playerNextBtn">⏭</button>
+                <span id="playerTrackName">Нет трека</span>
+            </div>
+            <div class="player-progress">
+                <input type="range" id="playerProgress" value="0" step="1">
+                <span id="playerTime">0:00 / 0:00</span>
+            </div>
+            <div class="player-upload">
+                <label for="playerMusicUpload" class="player-upload-btn">📂 Загрузить</label>
+                <input type="file" id="playerMusicUpload" accept="audio/*" style="display:none">
+            </div>
+        </div>
+
+        <!-- Модальное окно звонка -->
+        <div id="callModal" class="call-modal hidden">
+            <div class="call-modal-content">
+                <div class="call-header">
+                    <span>Звонок пользователю <span id="callTargetName"></span></span>
+                    <button id="closeCallModal">✖</button>
+                </div>
+                <div class="call-controls">
+                    <button id="acceptCallBtn" class="hidden">Принять</button>
+                    <button id="rejectCallBtn" class="hidden">Отклонить</button>
+                    <button id="hangupCallBtn" class="hidden">Завершить</button>
+                    <div id="callStatus">Ожидание...</div>
+                </div>
+                <audio id="remoteAudio" autoplay></audio>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>

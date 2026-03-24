@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="sosiskagrad/sosiskagrad.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
